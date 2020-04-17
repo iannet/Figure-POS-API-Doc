@@ -1,1 +1,0 @@
-Figure-POS-API-Doc
