@@ -1,0 +1,1272 @@
+FORMAT: 1A
+HOST: https://api.securecheckout.com/v1/
+
+# Figure Point of Sales API
+
+This API can be used for creating point of sales applications powered by the Figure platform.
+
+## Headers
+
+There are 2 HTTP Headers used by the cart API:
+
++ Content-Type
++ X-Auth-Token
+
+The *Content-Type* header is a standard header and should be set to application/json for all requests.
+
+The *X-Auth-Token* header is used to authenticate with the API server. To obtain an API key for your application you will need to contact Offset Partners LLC to request access.
+
+
+
+## Group Account
+Resources related to Account.
+
+
+## Account [/authenticate]
+
+
+### Authenticate User [POST /account/authenticate]
+
+
++ Request (application/json)
+
+  + Attributes
+      + account (string, optional) - Account Name
+      + password (string, required) - Customer Password
+      + username (string, required) - Customer Username
+  
+    + Body
+
+            {"username":"example@figurecommerce.com","password":"XXXXXX"}
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"ticket":"0b1dXYb0feda78d3dbHB873597dcd684b6ebmd9","profile":{"id":"42","email":"example@figurecommerce.com","first_name":"Ian","last_name":"Tucker","created":"2013-09-03 09:02:07"},"accounts":{"209":{"id":"209","app":"pos","account":"figureapi","name":"Figure Commerce"}}}
+
+
+
+### Get Account Auth Token [POST /account/authorize]
+
+
++ Request (application/json)
+
+  + Attributes
+      + account (string, required) - Account Name
+      + ticket (string, required) - Customer Authentication Token
+  
+    + Body
+
+            {"ticket":"0b1dXYb0feda78d3dbHB873597dcd684b6ebmd9","account":"figureapi"}
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"token":"26334fBH9487d1cbb5n2e99bc4jyafe451P5cb","account":{"id":"209","name":"Figure API Demo","account":"figureapi","created":"2018-02-13 09:15:56"}}
+
+## Group Addresses
+Resources related to Addresses.
+
+
+## Addresses [/addresses]
+
+
+### Create Address [POST /addresses]
+
+
++ Request (application/json)
+
+  + Attributes
+      + address (string, required) - Street Address
+      + address_2 (string, optional) - Unit Number
+      + city (string, required) - City
+      + customer_id (number, required) - Customer Id
+      + first_name (string, required) - Receipient First Name
+      + last_name (string, required) - Recipient Last Name
+      + phone (string, optional) - Recipient Phone Number
+      + state (string, required) - State
+      + title (string, optional) - Address Title
+      + zip (string, required) - Zip Code
+  
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+    + Body
+
+            {"first_name":"Ian","last_name":"Tucker","birthday":"1985-06-01","company":"Figure Commerce","phone":"7075558520","email":"example@commercebyfigure.com","address":"523 Brown St","address_2":"","city":"Napa","state":"CA","zip":"94559","country":"US","customer_id":"42"}
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"id":"3989","hash":"a187902adebd6b1aab810511fabcf475e4f5c8e2","created":"2018-03-05 22:03:28","last_update":"2018-04-20 20:48:32","title":"","first_name":"Ian","last_name":"Tucker","birthday":"1985-06-01","company":"Figure Commerce","phone":"7075558520","email":"","address":"523 Brown St","address_2":"","city":"Napa","state":"CA","zip":"94559","zip_ext":"3302","country":"US","lat":"38.29401000","long":"-122.28348000","residential":"1","verified":"1","customer_id":"42","default":"1","public":"0"}
+
+
+
+### Delete Address [DELETE /addresses/{id}]
+
++ Parameters
+  + id: ` `(number, required) - Address Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
+
+
+### Get Address [GET /addresses/{id}]
+
++ Parameters
+  + id: ` `(number, required) - Address Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"id":"3989","hash":"a187902adebd6b1aab810511fabcf475e4f5c8e2","created":"2018-03-05 22:03:28","last_update":"2018-04-20 20:48:32","title":"","first_name":"Ian","last_name":"Tucker","birthday":"1985-06-01","company":"Figure Commerce","phone":"7075558520","email":"","address":"523 Brown St","address_2":"","city":"Napa","state":"CA","zip":"94559","zip_ext":"3302","country":"US","lat":"38.29401000","long":"-122.28348000","residential":"1","verified":"1","customer_id":"42","default":"1","public":"0"}
+
+
+
+### Get Addresses By Customer [GET /addresses/customer/{customer_id}]
+
++ Parameters
+  + customer_id: ` `(number, required) - Customer Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"3989":{"id":"3989","hash":"a187902adebd6b1aab810511fabcf475e4f5c8e2","created":"2018-03-05 22:03:28","last_update":"2018-04-20 20:48:32","title":"","first_name":"Ian","last_name":"Tucker","birthday":"1985-06-01","company":"Figure Commerce","phone":"7075558520","email":"","address":"523 Brown St","address_2":"","city":"Napa","state":"CA","zip":"94559","zip_ext":"3302","country":"US","lat":"38.29401000","long":"-122.28348000","residential":"1","verified":"1","customer_id":"42","default":"1","public":"0"}}
+
+
+
+### Get All Addresses [GET /addresses]
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"3989":{"id":"3989","hash":"a187902adebd6b1aab810511fabcf475e4f5c8e2","created":"2018-03-05 22:03:28","last_update":"2018-04-20 20:48:32","title":"","first_name":"Ian","last_name":"Tucker","birthday":"1985-06-01","company":"Figure Commerce","phone":"7075558520","email":"","address":"523 Brown St","address_2":"","city":"Napa","state":"CA","zip":"94559","zip_ext":"3302","country":"US","lat":"38.29401000","long":"-122.28348000","residential":"1","verified":"1","customer_id":"42","default":"1","public":"0"}}
+
+
+
+### Get Default Customer Address [GET /addresses/customer/{customer_id}/default]
+
++ Parameters
+  + customer_id: ` `(number, required) - Customer Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"id":"3989","hash":"a187902adebd6b1aab810511fabcf475e4f5c8e2","created":"2018-03-05 22:03:28","last_update":"2018-04-20 20:48:32","title":"","first_name":"Ian","last_name":"Tucker","birthday":"1985-06-01","company":"Figure Commerce","phone":"7075558520","email":"","address":"523 Brown St","address_2":"","city":"Napa","state":"CA","zip":"94559","zip_ext":"3302","country":"US","lat":"38.29401000","long":"-122.28348000","residential":"1","verified":"1","customer_id":"42","default":"1","public":"0"}
+
+
+
+### Set Default Customer Address [PUT /addresses/customer/{customer_id}/default/{id}]
+
++ Parameters
+  + customer_id: ` `(number, required) - Customer Id
+  + id: ` `(number, required) - Address Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
+
+
+### Update Address [PUT /addresses/{id}]
+
++ Parameters
+  + id: ` `(number, required) - Address Id
+
+
++ Request (application/json)
+
+  + Attributes
+      + address (string, optional) - Street Address
+      + address_2 (string, optional) - Unit Number
+      + city (string, optional) - City
+      + company (string, optional) - Company Name
+      + first_name (string, optional) - First Name
+      + last_name (string, optional) - Last Name
+      + phone (string, optional) - Phone Number
+      + state (string, optional) - State
+      + title (string, optional) - Address Title
+      + zip (string, optional) - Zip Code
+  
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+    + Body
+
+            {"address": "523 Brown St", "city": "Napa", "state": "CA"}
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"id":"3989","hash":"a187902adebd6b1aab810511fabcf475e4f5c8e2","created":"2018-03-05 22:03:28","last_update":"2018-04-20 20:48:32","title":"","first_name":"Ian","last_name":"Tucker","birthday":"1985-06-01","company":"Figure Commerce","phone":"7075558520","email":"","address":"523 Brown St","address_2":"","city":"Napa","state":"CA","zip":"94559","zip_ext":"3302","country":"US","lat":"38.29401000","long":"-122.28348000","residential":"1","verified":"1","customer_id":"42","default":"1","public":"0"}
+
+## Group Cart
+Resources related to Cart.
+
+
+## Cart [/cart]
+
+
+### Create Admin Cart Session [POST /cart/session/admin/{customer_id}]
+
++ Parameters
+  + customer_id: ` `(number, required) - Customer Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            Admin-42-XXXXXXX
+
+## Group Customers
+Resources related to Customers.
+
+
+## Customers [/customers]
+
+
+### Create Customer [POST /customers]
+
+
++ Request (application/json)
+
+  + Attributes
+      + email (string, required) - Customer Email Address
+      + first_name (string, required) - Customer First Name
+      + last_name (string, required) - Customer Last Name
+      + password (string, required) - Customer Password
+  
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+    + Body
+
+            {"first_name": "John", "last_name": "Doe", "email": "example@commercebyfigure.com", "password": "XXXXXXXXX"}
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"id":"42","first_name":"John","last_name":"Doe","email":"example@commercebyfigure.com","status":"Active","state":"","order_count":"0","order_total":"0.00","last_order":"0000-00-00 00:00:00","last_order_total":"0.00","last_update":"2018-04-18 16:14:00","created":"2018-04-18 16:14:00","signup_email_last_sent":"2018-04-18 16:14:00"}
+
+
+
+### Delete Customer [DELETE /customers/{id}]
+
++ Parameters
+  + id: ` `(number, required) - Customer Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
+
+
+### Get Customer [GET /customers/{id}]
+
++ Parameters
+  + id: ` `(number, required) - Customer Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"id":"42","first_name":"John","last_name":"Doe","email":"example@commercebyfigure.com","status":"Active","state":"CA","order_count":"0","order_total":"0.00","last_order":"0000-00-00 00:00:00","last_order_total":"0.00","last_update":"2018-04-18 16:14:00","created":"2018-04-18 16:14:00","signup_email_last_sent":"2018-04-18 16:14:00"}
+
+
+
+### Get Customer Clubs [GET /customers/{id}/clubs]
+
++ Parameters
+  + id: ` `(number, required) - Customer Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            []
+
+
+
+### Get Customer Transactions [GET /customers/{id}/transactions]
+
++ Parameters
+  + id: ` `(number, required) - Customer Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            []
+
+
+
+### Search Customers [POST /customers/search]
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+    + Body
+
+            [{"type": "range", "key": "created", "from": 1522540800, "to": 1524097161},{"type": "term", "key": "customer_source", "value": "Web"}]
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"42":{"id":"42","first_name":"John","last_name":"Doe","email":"example@commercebyfigure.com","status":"Active","state":"CA","customer_source": "Web","order_count":"0","order_total":"0.00","last_order":"0000-00-00 00:00:00","last_order_total":"0.00","last_update":"2018-04-18 16:35:48","created":"2018-04-18 16:14:00","signup_email_last_sent":"2018-04-18 16:14:00"}}
+
+
+
+### Update Customer [PUT /customers/{id}]
+
++ Parameters
+  + id: ` `(number, required) - Customer Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+    + Body
+
+            {"state": "CA"}
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"id":"42","first_name":"John","last_name":"Doe","email":"example@commercebyfigure.com","status":"Active","state":"CA","order_count":"0","order_total":"0.00","last_order":"0000-00-00 00:00:00","last_order_total":"0.00","last_update":"2018-04-18 16:35:48","created":"2018-04-18 16:14:00","signup_email_last_sent":"2018-04-18 16:14:00"}
+
+
+
+### Update Customer Password [PUT /customers/{id}/password]
+
++ Parameters
+  + id: ` `(number, required) - Customer Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+    + Body
+
+            {"password": "XXXXXXXXX"}
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
+## CustomersGroups [/customers/groups]
+
+
+### Add Customer To Group [PUT /customers/{id}/groups/{group_id}]
+
++ Parameters
+  + group_id: ` `(number, required) - Group Id
+  + id: ` `(number, required) - Customer Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
+
+
+### Clear All Customer Groups [DELETE /customers/{id}/groups]
+
++ Parameters
+  + id: ` `(number, required) - Customer Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
+
+
+### Get Customer Groups [GET /customers/{id}/groups]
+
++ Parameters
+  + id: ` `(number, required) - Customer Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"1":{"id":"1","name":"Mailing List","discount":"0","free_shipping":"0","checkout_cart_min":"0"},"2":{"id":"2","name":"Customer Group I","discount":"0","free_shipping":"0","checkout_cart_min":"0"}}
+
+
+
+### Remove Customer From Group [DELETE /customers/{id}/groups/{group_id}]
+
++ Parameters
+  + group_id: ` `(number, required) - Group Id
+  + id: ` `(number, required) - Customer Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
+## CustomersNotes [/customers/notes]
+
+
+### Add Customer Note [POST /customers/{id}/notes]
+
++ Parameters
+  + id: ` `(number, required) - Customer Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+    + Body
+
+            {"message": "John would like to ship FedEx if possible.", "user_id": 1, "user_name": "Ian Tucker", "type": "Admin"}
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
+
+
+### Get Customer Notes [GET /customers/{id}/notes/{type}]
+
++ Parameters
+  + id: ` `(number, required) - Customer Id
+  + type: ` `(string, required) - Note Type
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            [{"id":"4","customer_id":"42","created":"2018-04-19 09:14:09","type":"Admin","user_id":"1","user_name":"Ian Tucker","message":"John is a Great Customer!"},{"id":"1","customer_id":"42","created":"2018-04-19 09:09:51","type":"Admin","user_id":"1","user_name":"Ian Tucker","message":"John would like to ship FedEx if possible."}]
+
+## CustomersTags [/customers/tags]
+
+
+### Add Tag to Customer [PUT /customers/{id}/tags/{tag}]
+
++ Parameters
+  + id: ` `(number, required) - Customer Id
+  + tag: ` `(string, required) - Tag
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
+
+
+### Clear All Tags from Customer [DELETE /customers/{id}/tags]
+
++ Parameters
+  + id: ` `(number, required) - Customer Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
+
+
+### Get Customer Tags [GET /customers/{id}/tags]
+
++ Parameters
+  + id: ` `(number, required) - Customer Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            ["VIPCustomer","FedExOnly"]
+
+
+
+### Remove Tag from Customer [DELETE /customers/{id}/tags/{tag}]
+
++ Parameters
+  + id: ` `(number, required) - Customer Id
+  + tag: ` `(string, required) - Tag
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
+## Group Groups
+Resources related to Groups.
+
+
+## Groups [/groups]
+
+
+### Create Group [POST /groups]
+
+
++ Request (application/json)
+
+  + Attributes
+      + description (string, optional) - Description of Group
+      + name (string, required) - Group Title
+      + status (string, optional) - Group Status
+  
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+    + Body
+
+            {"name": "Customer Group I", "status": "Active", "description": "New Customer Group."}
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"id":"2","name":"Customer Group I","status":"Active","sort":"0","allocation_message":"","allocation_start":"0000-00-00 00:00:00","checkout_cart_min":"0","allocation_end":"0000-00-00 00:00:00","discount":"0","free_shipping":"0","description":"New Customer Group."}
+
+
+
+### Delete Group [DELETE /groups/{id}]
+
++ Parameters
+  + id: ` `(number, required) - Group Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
+
+
+### Get All Groups [GET /groups]
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"2":{"id":"2","name":"Customer Group I","status":"Active","sort":"0","allocation_message":"","allocation_start":"0000-00-00 00:00:00","checkout_cart_min":"0","allocation_end":"0000-00-00 00:00:00","discount":"0","free_shipping":"0","description":"Updated Customer Group"},"1":{"id":"1","name":"Mailing List","status":"Active","sort":"0","allocation_message":"","allocation_start":"0000-00-00 00:00:00","checkout_cart_min":"0","allocation_end":"0000-00-00 00:00:00","discount":"0","free_shipping":"0"}}
+
+
+
+### Get Customers In Group [GET /groups/{id}/customers]
+
++ Parameters
+  + id: ` `(number, required) - Group Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"42":{"id":"42","first_name":"John","last_name":"Doe","email":"example@commercebyfigure.com","status":"Active","state":"CA","order_count":"0","order_total":"0.00","last_order":"0000-00-00 00:00:00","last_order_total":"0.00","last_update":"2018-04-18 16:35:48","created":"2018-04-18 16:14:00","signup_email_last_sent":"2018-04-18 16:14:00"}}
+
+
+
+### Get Group [GET /groups/{id}]
+
++ Parameters
+  + id: ` `(number, required) - Group Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"id":"2","name":"Customer Group I","status":"Active","sort":"0","allocation_message":"","allocation_start":"0000-00-00 00:00:00","checkout_cart_min":"0","allocation_end":"0000-00-00 00:00:00","discount":"0","free_shipping":"0","description":"New Customer Group."}
+
+
+
+### Update Group [PUT /groups/{id}]
+
++ Parameters
+  + id: ` `(number, required) - Group Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+    + Body
+
+            {"description": "Updated Customer Group"}
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"id":"2","name":"Customer Group I","status":"Active","sort":"0","allocation_message":"","allocation_start":"0000-00-00 00:00:00","checkout_cart_min":"0","allocation_end":"0000-00-00 00:00:00","discount":"0","free_shipping":"0","description":"Updated Customer Group"}
+
+## Group Orders
+Resources related to Orders.
+
+
+## Orders [/orders]
+
+
+### Cancel Order [DELETE /orders{id}]
+
++ Parameters
+  + id: ` `(number, required) - Order Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
+
+
+### Get Order [GET /orders/{id}]
+
++ Parameters
+  + id: ` `(number, required) - Order Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"id":"42","datestamp":"2018-03-23 16:24:15","last_update":"2018-03-23 16:24:15","status":"","subtotal":"45.00","tax":"3.15","shipping":"20.00","discount":"9.00","credits":"0.00","refund":"0.00","total":"59.15","customer_id":"1","address":"","address_2":"","address_id":"3979","birthday":"1982-11-1","city":"","company":"","credit_id":"19","credit_number":"4242","credit_type":"Visa","customer_credits":"0.00","discount_customer":"0.2","email":"example@commercebyfigure.com","first_name":"John","gift_message":"","instructions":"","item_count":"1","last_name":"Doe","order_id":"42","order_type":"Web","payment_status":"Paid","phone":"707-287-6262","salutation":"Mr.","shipping_address":"770 3rd St E","shipping_address_2":"","shipping_city":"Sonoma","shipping_company":"","shipping_first_name":"John","shipping_id":"3979","shipping_last_name":"Doe","shipping_method":"11","shipping_method_carrier":"FedEx","shipping_method_code":"FDXGND","shipping_method_name":"Ground","shipping_phone":"707-287-6262","shipping_state":"CA","shipping_title":"Shipping Address","shipping_zip":"95476","ship_status":"Not Shipped","state":"","tax_rate":"8.75","transaction_id":"36","zip":"","products":[{"id":"42","sku":"H","name":"2017 Pinot Meunier","type":"","bottle_size":"750mL","retail_price":"0.00","discount":"0.00","discount_type":"","price":"45","quantity":"1","status":"","description":"2017 Pinot Meunier ","image":"","stock_status":"","shipped":"0","created":"2018-03-23 16:24:18"}]}
+
+
+
+### Search Orders [GET /orders/search]
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+    + Body
+
+            [{"type": "range", "key": "datestamp", "from": 1522540800, "to": 1524097161},{"type": "term", "key": "payment_status", "value": "Paid"},{"type": "terms", "key": "ship_status", "value": ["Shipped", "Picked Up", "Completed"]}]
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"id":"42","datestamp":"2018-03-23 16:24:15","last_update":"2018-03-23 16:24:15","status":"","subtotal":"45.00","tax":"3.15","shipping":"20.00","discount":"9.00","credits":"0.00","refund":"0.00","total":"59.15","customer_id":"1","address":"","address_2":"","address_id":"3979","birthday":"1982-11-1","city":"","company":"","credit_id":"19","credit_number":"4242","credit_type":"Visa","customer_credits":"0.00","discount_customer":"0.2","email":"example@commercebyfigure.com","first_name":"John","gift_message":"","instructions":"","item_count":"1","last_name":"Doe","order_id":"42","order_type":"Web","payment_status":"Paid","phone":"707-287-6262","salutation":"Mr.","shipping_address":"770 3rd St E","shipping_address_2":"","shipping_city":"Sonoma","shipping_company":"","shipping_first_name":"John","shipping_id":"3979","shipping_last_name":"Doe","shipping_method":"11","shipping_method_carrier":"FedEx","shipping_method_code":"FDXGND","shipping_method_name":"Ground","shipping_phone":"707-287-6262","shipping_state":"CA","shipping_title":"Shipping Address","shipping_zip":"95476","ship_status":"Shipped","state":"","tax_rate":"8.75","transaction_id":"36","zip":"","products":[{"id":"42","sku":"H","name":"2017 Pinot Meunier","type":"","bottle_size":"750mL","retail_price":"0.00","discount":"0.00","discount_type":"","price":"45","quantity":"1","status":"","description":"2017 Pinot Meunier ","image":"","stock_status":"","shipped":"0","created":"2018-03-23 16:24:18"}]}
+
+## Orders Notes [/orders/notes]
+
+
+### Add Note [POST /orders/{id}/notes]
+
++ Parameters
+  + id: ` `(number, required) - Order Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+    + Body
+
+            {"message": "John would like to ship FedEx if possible.", "user_id": 1, "user_name": "Ian Tucker", "type": "Admin"}
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
+
+
+### Get Notes [GET /orders/{id}/notes/{type}]
+
++ Parameters
+  + id: ` `(number, required) - Order Id
+  + type: ` `(string, required) - Note Type
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            [{"id":"4","customer_id":"42","created":"2018-04-19 09:14:09","type":"Admin","user_id":"1","user_name":"Ian Tucker","message":"John is a Great Customer!"},{"id":"1","customer_id":"42","created":"2018-04-19 09:09:51","type":"Admin","user_id":"1","user_name":"Ian Tucker","message":"John would like to ship FedEx if possible."}]
+
+## Orders Packages [/orders/packages]
+
+
+### Add Packages [PUT /orders/{id}/packages]
+
++ Parameters
+  + id: ` `(number, required) - Order Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+    + Body
+
+            [{}]
+
++ Response 200 (application/json)
+
+    + Body
+
+            []
+
+
+
+### Clear Packages [DELETE /orders/{id}/packages]
+
++ Parameters
+  + id: ` `(number, required) - Order Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
+
+
+### Get Packages [GET /orders/{id}/packages]
+
++ Parameters
+  + id: ` `(number, required) - Order Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            []
+
+
+
+### Remove Package [DELETE /orders/{id}/packages/{tracking_number}]
+
++ Parameters
+  + id: ` `(number, required) - Order Id
+  + tracking_number: ` `(string, required) - Package Tracking Number
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
+## Orders Tags [/orders/tags]
+
+
+### Add Tag [PUT /orders/{id}/tags/{tag}]
+
++ Parameters
+  + id: ` `(number, required) - Order Id
+  + tag: ` `(string, required) - Tag
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
+
+
+### Clear Tags [DELETE /orders/{id}/tags]
+
++ Parameters
+  + id: ` `(number, required) - Order Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
+
+
+### Get Tags [GET /orders/{id}/tags]
+
++ Parameters
+  + id: ` `(number, required) - Order Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            ["RushDevliery","FedExOnly"]
+
+
+
+### Remove Tag [DELETE /orders/{id}/tags/{tag}]
+
++ Parameters
+  + id: ` `(number, required) - Order Id
+  + tag: ` `(string, required) - Tag
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
+## Group Payment
+Resources related to Payment.
+
+
+## Payment [/payment]
+
+
+### Create Payment Method [POST /payment]
+
+
++ Request (application/json)
+
+  + Attributes
+      + address (string, required) - Street Address
+      + address_2 (string, optional) - Unit Number
+      + card_token (string, required) - Stripe Credit Card Token
+      + card_type (string, required) - Credit Card Brand ie: Visa, American Express, etc
+      + city (string, required) - City
+      + credit_expires_month (string, required) - Expires Month ie: 06
+      + credit_expires_year (string, required) - Expires Year ie: 2016
+      + credit_number (string, required) - Last 4 Digits of Credit Card Number
+      + customer_id (number, required) - Customer Id
+      + first_name (string, required) - Customer First Name
+      + last_name (string, required) - Customer Last Name
+      + phone (string, optional) - Customer Phone Number
+      + state (string, required) - State
+      + zip (string, required) - Zip Code
+  
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+    + Body
+
+            {"first_name":"Ian","last_name":"Tucker","card_token": "XXXXXXXXX", "credit_type":"Visa","credit_number":"1111","credit_expires_month":"6","credit_expires_year":"2026","birthday":"1985-06-01","company":"Figure Commerce","phone":"7075558520","address":"523 Brown St","address_2":"","city":"Napa","state":"CA","zip":"94559","country":"US","customer_id":"42"}
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"id":"22","fingerprint":"","credit_type":"Visa","credit_number":"1111","credit_expires_month":"6","credit_expires_year":"2026","profile_id":"0","payment_profile_id":"0","first_name":"Ian","birthday":"","phone":"","company":"","last_name":"Tucker","address":"523 Brown St","address_2":"","city":"Napa","state":"CA","zip":"94559","country":"US","customer_id":"42","default":"1","created":"2018-03-05 22:03:01","last_update":"0000-00-00 00:00:00"}
+
+
+
+### Delete Payment Method [DELETE /payment/{id}]
+
++ Parameters
+  + id: ` `(number, required) - Payment Method Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
+
+
+### Get All Payment Menthods [GET /payment]
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"22":{"id":"22","fingerprint":"","credit_type":"Visa","credit_number":"1111","credit_expires_month":"6","credit_expires_year":"2026","profile_id":"0","payment_profile_id":"0","first_name":"Ian","birthday":"","phone":"","company":"","last_name":"Tucker","address":"523 Brown St","address_2":"","city":"Napa","state":"CA","zip":"94559","country":"US","customer_id":"42","default":"1","created":"2018-03-05 22:03:01","last_update":"0000-00-00 00:00:00"}}
+
+
+
+### Get Default Customer Payment Method [GET /payment/customer/{customer_id}/default]
+
++ Parameters
+  + customer_id: ` `(number, required) - Customer Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"id":"22","fingerprint":"","credit_type":"Visa","credit_number":"1111","credit_expires_month":"6","credit_expires_year":"2026","profile_id":"0","payment_profile_id":"0","first_name":"Ian","birthday":"","phone":"","company":"","last_name":"Tucker","address":"523 Brown St","address_2":"","city":"Napa","state":"CA","zip":"94559","country":"US","customer_id":"42","default":"1","created":"2018-03-05 22:03:01","last_update":"0000-00-00 00:00:00"}
+
+
+
+### Get Payment Method [GET /payment/{id}]
+
++ Parameters
+  + id: ` `(number, required) - Payment Method Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"id":"22","fingerprint":"","credit_type":"Visa","credit_number":"1111","credit_expires_month":"6","credit_expires_year":"2026","profile_id":"0","payment_profile_id":"0","first_name":"Ian","birthday":"","phone":"","company":"","last_name":"Tucker","address":"523 Brown St","address_2":"","city":"Napa","state":"CA","zip":"94559","country":"US","customer_id":"42","default":"1","created":"2018-03-05 22:03:01","last_update":"0000-00-00 00:00:00"}
+
+
+
+### Get Payment Methods By Customer [GET /payment/customer/{customer_id}]
+
++ Parameters
+  + customer_id: ` `(number, required) - Customer Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"22":{"id":"22","fingerprint":"","credit_type":"Visa","credit_number":"1111","credit_expires_month":"6","credit_expires_year":"2026","profile_id":"0","payment_profile_id":"0","first_name":"Ian","birthday":"","phone":"","company":"","last_name":"Tucker","address":"523 Brown St","address_2":"","city":"Napa","state":"CA","zip":"94559","country":"US","customer_id":"42","default":"1","created":"2018-03-05 22:03:01","last_update":"0000-00-00 00:00:00"}}
+
+
+
+### Set Default Customer Payment Method [PUT /payment/customer/{customer_id}/default/{id}]
+
++ Parameters
+  + customer_id: ` `(number, required) - Customer Id
+  + id: ` `(number, required) - Payment Method Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
+
+
+### Update Payment Method [PUT /payment/{id}]
+
++ Parameters
+  + id: ` `(number, required) - Payment Method Id
+
+
++ Request (application/json)
+
+  + Attributes
+      + address (string, optional) - Street Address
+      + address_2 (string, optional) - Unit Number
+      + city (string, optional) - City
+      + company (string, optional) - Company Name
+      + first_name (string, optional) - First Name
+      + last_name (string, optional) - Last Name
+      + phone (string, optional) - Phone Number
+      + state (string, optional) - State
+      + title (string, optional) - Address Title
+      + zip (string, optional) - Zip Code
+  
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+    + Body
+
+            {"address": "523 Brown St", "city": "Napa", "state": "CA"}
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"id":"22","fingerprint":"","credit_type":"Visa","credit_number":"1111","credit_expires_month":"6","credit_expires_year":"2026","profile_id":"0","payment_profile_id":"0","first_name":"Ian","birthday":"","phone":"","company":"","last_name":"Tucker","address":"523 Brown St","address_2":"","city":"Napa","state":"CA","zip":"94559","country":"US","customer_id":"42","default":"1","created":"2018-03-05 22:03:01","last_update":"0000-00-00 00:00:00"}
