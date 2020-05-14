@@ -7,15 +7,33 @@ This API can be used for creating point of sales applications powered by the Fig
 
 ## Headers
 
-There are 2 HTTP Headers used by the cart API:
+There are 2 HTTP Headers used by the point of sales API:
 
 + Content-Type
 + X-Auth-Token
 
 The *Content-Type* header is a standard header and should be set to application/json for all requests.
 
-The *X-Auth-Token* header is used to authenticate with the API server. To obtain an API key for your application you will need to contact Offset Partners LLC to request access.
+The *X-Auth-Token* header is used to authenticate with the API server. The Auth Token is obtained by logging into the application using the *Authenticate User* and *Get Account Auth Token* API methods.
 
+## Authentication
+
+There are 2 endpoints used for authenticating with the API:
+
++ <a href='#reference/account/account/authenticate-user'>Authenticate User</a>
++ <a href='#reference/account/account/get-account-auth-token'>Get Account Auth Token</a>
+
+#### Authenticate User
+
+The <a href='#reference/account/account/authenticate-user'>*Authenticate User*</a> method allows authentication provided a valid administrator username and password. Along with basic profile information this method returns a *Ticket* which can be used with the method <a href='#reference/account/account/get-account-auth-token'>*Get Account Auth Token*</a> to obtain an *Auth Token* which can be passed in the *X-Auth-Token* Header to allow API access for an account. If you already know what account you want to access you can do this in a single step by supplying the account you wish to access as well using the optional *account* field.
+
+#### Get Account Auth Token
+
+The <a href='#reference/account/account/get-account-auth-token'>*Get Account Auth Token*</a> method takes an Authentication Ticket supplied by the <a href='#reference/account/account/authenticate-user'>*Authenticate User*</a> method and an account you wish to access and returns an Auth Token that can be passed in the *X-Auth-Token* header to allow access to an account via the API.
+
+## Cart API
+
+Populating customer carts and placing orders is facilitated by the <a href='https://securecheckout.docs.apiary.io'>*Figure Commerce API*</a>. The *Cart API* can be accessed using the same *X-Auth-Token* for the account obtained from the <a href='#reference/account/account/get-account-auth-token'>*Get Account Auth Token*</a>. The *X-Session-Id* for a customer can be obtained by passing the customer id to the *Create Admin Cart Session* method. This allows a cart to be created for a customer without knowledge of the customer password.
 
 
 ## Group Account
@@ -73,7 +91,7 @@ Resources related to Addresses.
 ## Addresses [/addresses]
 
 
-### Create Address [POST /addresses]
+### Create Address [POST /pos/addresses]
 
 
 + Request (application/json)
@@ -105,7 +123,7 @@ Resources related to Addresses.
 
 
 
-### Delete Address [DELETE /addresses/{id}]
+### Delete Address [DELETE /pos/addresses/{id}]
 
 + Parameters
   + id: ` `(number, required) - Address Id
@@ -125,7 +143,7 @@ Resources related to Addresses.
 
 
 
-### Get Address [GET /addresses/{id}]
+### Get Address [GET /pos/addresses/{id}]
 
 + Parameters
   + id: ` `(number, required) - Address Id
@@ -145,7 +163,7 @@ Resources related to Addresses.
 
 
 
-### Get Addresses By Customer [GET /addresses/customer/{customer_id}]
+### Get Addresses By Customer [GET /pos/addresses/customer/{customer_id}]
 
 + Parameters
   + customer_id: ` `(number, required) - Customer Id
@@ -165,7 +183,7 @@ Resources related to Addresses.
 
 
 
-### Get All Addresses [GET /addresses]
+### Get All Addresses [GET /pos/addresses]
 
 
 + Request (application/json)
@@ -182,7 +200,7 @@ Resources related to Addresses.
 
 
 
-### Get Default Customer Address [GET /addresses/customer/{customer_id}/default]
+### Get Default Customer Address [GET /pos/addresses/customer/{customer_id}/default]
 
 + Parameters
   + customer_id: ` `(number, required) - Customer Id
@@ -202,7 +220,7 @@ Resources related to Addresses.
 
 
 
-### Set Default Customer Address [PUT /addresses/customer/{customer_id}/default/{id}]
+### Set Default Customer Address [PUT /pos/addresses/customer/{customer_id}/default/{id}]
 
 + Parameters
   + customer_id: ` `(number, required) - Customer Id
@@ -223,7 +241,7 @@ Resources related to Addresses.
 
 
 
-### Update Address [PUT /addresses/{id}]
+### Update Address [PUT /pos/addresses/{id}]
 
 + Parameters
   + id: ` `(number, required) - Address Id
@@ -263,7 +281,7 @@ Resources related to Cart.
 ## Cart [/cart]
 
 
-### Create Admin Cart Session [POST /cart/session/admin/{customer_id}]
+### Create Admin Cart Session [POST /pos/cart/session/admin/{customer_id}]
 
 + Parameters
   + customer_id: ` `(number, required) - Customer Id
@@ -281,6 +299,28 @@ Resources related to Cart.
 
             Admin-42-XXXXXXX
 
+## Group Config
+Resources related to Config.
+
+
+## Config [/config]
+
+
+### Get Account Config [GET /pos/config]
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"admin_email":"betatester@750group.com","amedeo_password":"","amedeo_username":"","aws_ses_verified":"TRUE","cm_api_key":"af737b8ee89e4714079ea2c717cd2ec5fc0b6a81c776d7ae","cm_client_id":"1a6a176082cf2a6290f265e227af9cc4","cm_list_id":"e82af5924ae170d3fc17a94faa3050f4","company_address":"523 Brown Street","company_address_2":"Suite 750","company_city":"Napa","company_email":"hello@acmevineyards.com","company_name":"Acme Vineyards","company_phone":"707-947-3007","company_state":"CA","COMPANY_WEB_DESCRIPTION":"DEMO - Enjoy the wines of Acme Vineyards.","COMPANY_WEB_KEYWORDS":"acme vineyards, acme, vineyards, wines, napa","company_zip":"94559","customer_credit":"","customer_quote_1":"\"Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat.\"<br><strong>\u2014T. Wilder<\/strong>","customer_quote_2":"\"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod&nbsp;reprehenderit&nbsp;&nbsp;tempor.\"<br><strong>\u2014T. Caly<\/strong>","customer_quote_3":"\"incididunt ut labore et dolore magna aliqua. Ut enim ad minim&nbsp;reprehenderit&nbsp;veniam adipisicing.\"<br><strong>\u2014I. Tucker<\/strong>","customer_quote_4":"\"Excepteur sint occaecat cupidatat non proident, sunt in culpa&nbsp;reprehenderit qui officia deserunt.\"<br><strong>\u2014L. Trefethen<\/strong>","default_group":"23","enable_advanced":"TRUE","enable_advanced_zones":"TRUE","enable_allocation_button":"FALSE","enable_allocation_button_welcomeoffer":"FALSE","enable_allocation_sales":"FALSE","enable_amedeo":"FALSE","enable_club":"TRUE","enable_cm_history":"TRUE","enable_customer_quotes":"FALSE","enable_ddc":"FALSE","enable_eaglerock":"FALSE","enable_faq":"TRUE","enable_map":"TRUE","enable_microsite":"TRUE","enable_processing":"FALSE","enable_promo":"TRUE","enable_reservations":"FALSE","enable_shipcompliant":"FALSE","enable_shipcompliant_fulfillment":"FALSE","enable_shipcompliant_tax_rates":"FALSE","enable_social_media":"TRUE","enable_special_promotions":"FALSE","enable_twitter_feed":"FALSE","enable_vinfillment":"FALSE","enforce_allocation":"FALSE","extra_info_1":"extra 1","extra_info_2":"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo. Adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.","extra_info_3":"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.","extra_info_4":"Summer shipping now in progress","extra_info_5":"","extra_info_6":"","free_shipping_subtotal_min":"","goal_month":"7500.00","goal_year":"100000","google_analytics_id":"UA-1234","host":"","image_email_header":"http:\/\/s3.amazonaws.com\/efcheckout\/acmev\/email_header-70971.gif","image_logo":"\/\/s3.amazonaws.com\/efcheckout\/acmev\/logo-47249.png","invite_email":"","list_customer_channels":"Web\r\nInternal\r\nTasting Room","list_customer_sources":"Friend\/Colleague\r\nRestaurant\/Shop\r\nPress\/Website\r\nEvent\/Tasting\r\nHotel\/Other Winery\r\nOther\r\nBob\u2019s Buds","list_customer_types":"Waiting List\r\nAllocated","list_sales_agents":"Ian\r\nTyson\r\nTori\r\nLoren","member_since":"June 2011","other_url":"","payment_descriptor":"Acme Vineyards","reason":"","referral_credit":"","reservation_email_confirmation":"","reservation_email_decline":"","reservation_location":"","reservation_type":"","sales_image_1":"\/\/s3.amazonaws.com\/efcheckout\/acmev\/settings\/sales_image_1-92359.jpeg","sales_image_2":"\/\/s3.amazonaws.com\/efcheckout\/acmev\/settings\/sales_image_2-78556.jpeg","sales_image_3":"\/\/s3.amazonaws.com\/efcheckout\/acmev\/settings\/sales_image_3-38639.jpeg","ship_compliant_password":"","ship_compliant_shipment_status":"","ship_compliant_username":"","social_facebook":"750group","social_flickr":"","social_googleplus":"750group","social_instagram":"750group","social_linkedin":"","social_pinterest":"750group","social_tumblr":"750group","social_twitter":"750group","social_youtube":"","website_url":"http:\/\/acmev.securecheckout.com"}
+
 ## Group Customers
 Resources related to Customers.
 
@@ -288,7 +328,7 @@ Resources related to Customers.
 ## Customers [/customers]
 
 
-### Create Customer [POST /customers]
+### Create Customer [POST /pos/customers]
 
 
 + Request (application/json)
@@ -314,7 +354,7 @@ Resources related to Customers.
 
 
 
-### Delete Customer [DELETE /customers/{id}]
+### Delete Customer [DELETE /pos/customers/{id}]
 
 + Parameters
   + id: ` `(number, required) - Customer Id
@@ -334,67 +374,7 @@ Resources related to Customers.
 
 
 
-### Get Customer [GET /customers/{id}]
-
-+ Parameters
-  + id: ` `(number, required) - Customer Id
-
-
-+ Request (application/json)
-
-    + Headers
-
-            X-Auth-Token: XXXXXXXXX
-
-+ Response 200 (application/json)
-
-    + Body
-
-            {"id":"42","first_name":"John","last_name":"Doe","email":"example@commercebyfigure.com","status":"Active","state":"CA","order_count":"0","order_total":"0.00","last_order":"0000-00-00 00:00:00","last_order_total":"0.00","last_update":"2018-04-18 16:14:00","created":"2018-04-18 16:14:00","signup_email_last_sent":"2018-04-18 16:14:00"}
-
-
-
-### Get Customer Clubs [GET /customers/{id}/clubs]
-
-+ Parameters
-  + id: ` `(number, required) - Customer Id
-
-
-+ Request (application/json)
-
-    + Headers
-
-            X-Auth-Token: XXXXXXXXX
-
-+ Response 200 (application/json)
-
-    + Body
-
-            []
-
-
-
-### Get Customer Transactions [GET /customers/{id}/transactions]
-
-+ Parameters
-  + id: ` `(number, required) - Customer Id
-
-
-+ Request (application/json)
-
-    + Headers
-
-            X-Auth-Token: XXXXXXXXX
-
-+ Response 200 (application/json)
-
-    + Body
-
-            []
-
-
-
-### Search Customers [POST /customers/search]
+### Filter Customers [POST /pos/customers/filter]
 
 
 + Request (application/json)
@@ -414,7 +394,87 @@ Resources related to Customers.
 
 
 
-### Update Customer [PUT /customers/{id}]
+### Get Customer [GET /pos/customers/{id}]
+
++ Parameters
+  + id: ` `(number, required) - Customer Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"id":"42","first_name":"John","last_name":"Doe","email":"example@commercebyfigure.com","status":"Active","state":"CA","order_count":"0","order_total":"0.00","last_order":"0000-00-00 00:00:00","last_order_total":"0.00","last_update":"2018-04-18 16:14:00","created":"2018-04-18 16:14:00","signup_email_last_sent":"2018-04-18 16:14:00"}
+
+
+
+### Get Customer Clubs [GET /pos/customers/{id}/clubs]
+
++ Parameters
+  + id: ` `(number, required) - Customer Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            []
+
+
+
+### Get Customer Transactions [GET /pos/customers/{id}/transactions]
+
++ Parameters
+  + id: ` `(number, required) - Customer Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            []
+
+
+
+### Search Customers [GET /pos/customers/search/{query}]
+
++ Parameters
+  + query: ` `(string, required) - Customer Search Query String
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"42":{"id":"42","first_name":"John","last_name":"Doe","email":"example@commercebyfigure.com","status":"Active","state":"CA","customer_source": "Web","order_count":"0","order_total":"0.00","last_order":"0000-00-00 00:00:00","last_order_total":"0.00","last_update":"2018-04-18 16:35:48","created":"2018-04-18 16:14:00","signup_email_last_sent":"2018-04-18 16:14:00"}}
+
+
+
+### Update Customer [PUT /pos/customers/{id}]
 
 + Parameters
   + id: ` `(number, required) - Customer Id
@@ -437,7 +497,7 @@ Resources related to Customers.
 
 
 
-### Update Customer Password [PUT /customers/{id}/password]
+### Update Customer Password [PUT /pos/customers/{id}/password]
 
 + Parameters
   + id: ` `(number, required) - Customer Id
@@ -461,7 +521,7 @@ Resources related to Customers.
 ## CustomersGroups [/customers/groups]
 
 
-### Add Customer To Group [PUT /customers/{id}/groups/{group_id}]
+### Add Customer To Group [PUT /pos/customers/{id}/groups/{group_id}]
 
 + Parameters
   + group_id: ` `(number, required) - Group Id
@@ -482,7 +542,7 @@ Resources related to Customers.
 
 
 
-### Clear All Customer Groups [DELETE /customers/{id}/groups]
+### Clear All Customer Groups [DELETE /pos/customers/{id}/groups]
 
 + Parameters
   + id: ` `(number, required) - Customer Id
@@ -502,7 +562,7 @@ Resources related to Customers.
 
 
 
-### Get Customer Groups [GET /customers/{id}/groups]
+### Get Customer Groups [GET /pos/customers/{id}/groups]
 
 + Parameters
   + id: ` `(number, required) - Customer Id
@@ -522,7 +582,7 @@ Resources related to Customers.
 
 
 
-### Remove Customer From Group [DELETE /customers/{id}/groups/{group_id}]
+### Remove Customer From Group [DELETE /pos/customers/{id}/groups/{group_id}]
 
 + Parameters
   + group_id: ` `(number, required) - Group Id
@@ -544,7 +604,7 @@ Resources related to Customers.
 ## CustomersNotes [/customers/notes]
 
 
-### Add Customer Note [POST /customers/{id}/notes]
+### Add Customer Note [POST /pos/customers/{id}/notes]
 
 + Parameters
   + id: ` `(number, required) - Customer Id
@@ -567,7 +627,7 @@ Resources related to Customers.
 
 
 
-### Get Customer Notes [GET /customers/{id}/notes/{type}]
+### Get Customer Notes [GET /pos/customers/{id}/notes/{type}]
 
 + Parameters
   + id: ` `(number, required) - Customer Id
@@ -589,7 +649,7 @@ Resources related to Customers.
 ## CustomersTags [/customers/tags]
 
 
-### Add Tag to Customer [PUT /customers/{id}/tags/{tag}]
+### Add Tag to Customer [PUT /pos/customers/{id}/tags/{tag}]
 
 + Parameters
   + id: ` `(number, required) - Customer Id
@@ -610,7 +670,7 @@ Resources related to Customers.
 
 
 
-### Clear All Tags from Customer [DELETE /customers/{id}/tags]
+### Clear All Tags from Customer [DELETE /pos/customers/{id}/tags]
 
 + Parameters
   + id: ` `(number, required) - Customer Id
@@ -630,7 +690,7 @@ Resources related to Customers.
 
 
 
-### Get Customer Tags [GET /customers/{id}/tags]
+### Get Customer Tags [GET /pos/customers/{id}/tags]
 
 + Parameters
   + id: ` `(number, required) - Customer Id
@@ -650,7 +710,7 @@ Resources related to Customers.
 
 
 
-### Remove Tag from Customer [DELETE /customers/{id}/tags/{tag}]
+### Remove Tag from Customer [DELETE /pos/customers/{id}/tags/{tag}]
 
 + Parameters
   + id: ` `(number, required) - Customer Id
@@ -676,7 +736,7 @@ Resources related to Groups.
 ## Groups [/groups]
 
 
-### Create Group [POST /groups]
+### Create Group [POST /pos/groups]
 
 
 + Request (application/json)
@@ -701,7 +761,7 @@ Resources related to Groups.
 
 
 
-### Delete Group [DELETE /groups/{id}]
+### Delete Group [DELETE /pos/groups/{id}]
 
 + Parameters
   + id: ` `(number, required) - Group Id
@@ -721,7 +781,7 @@ Resources related to Groups.
 
 
 
-### Get All Groups [GET /groups]
+### Get All Groups [GET /pos/groups]
 
 
 + Request (application/json)
@@ -738,7 +798,7 @@ Resources related to Groups.
 
 
 
-### Get Customers In Group [GET /groups/{id}/customers]
+### Get Customers In Group [GET /pos/groups/{id}/customers]
 
 + Parameters
   + id: ` `(number, required) - Group Id
@@ -758,7 +818,7 @@ Resources related to Groups.
 
 
 
-### Get Group [GET /groups/{id}]
+### Get Group [GET /pos/groups/{id}]
 
 + Parameters
   + id: ` `(number, required) - Group Id
@@ -778,7 +838,7 @@ Resources related to Groups.
 
 
 
-### Update Group [PUT /groups/{id}]
+### Update Group [PUT /pos/groups/{id}]
 
 + Parameters
   + id: ` `(number, required) - Group Id
@@ -806,7 +866,7 @@ Resources related to Orders.
 ## Orders [/orders]
 
 
-### Cancel Order [DELETE /orders{id}]
+### Cancel Order [DELETE /pos/orders{id}]
 
 + Parameters
   + id: ` `(number, required) - Order Id
@@ -826,7 +886,27 @@ Resources related to Orders.
 
 
 
-### Get Order [GET /orders/{id}]
+### Filter Orders [POST /pos/orders/filter]
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+    + Body
+
+            [{"type": "range", "key": "datestamp", "from": 1522540800, "to": 1524097161},{"type": "term", "key": "payment_status", "value": "Paid"},{"type": "terms", "key": "ship_status", "value": ["Shipped", "Picked Up", "Completed"]}]
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"id":"42","datestamp":"2018-03-23 16:24:15","last_update":"2018-03-23 16:24:15","status":"","subtotal":"45.00","tax":"3.15","shipping":"20.00","discount":"9.00","credits":"0.00","refund":"0.00","total":"59.15","customer_id":"1","address":"","address_2":"","address_id":"3979","birthday":"1982-11-1","city":"","company":"","credit_id":"19","credit_number":"4242","credit_type":"Visa","customer_credits":"0.00","discount_customer":"0.2","email":"example@commercebyfigure.com","first_name":"John","gift_message":"","instructions":"","item_count":"1","last_name":"Doe","order_id":"42","order_type":"Web","payment_status":"Paid","phone":"707-287-6262","salutation":"Mr.","shipping_address":"770 3rd St E","shipping_address_2":"","shipping_city":"Sonoma","shipping_company":"","shipping_first_name":"John","shipping_id":"3979","shipping_last_name":"Doe","shipping_method":"11","shipping_method_carrier":"FedEx","shipping_method_code":"FDXGND","shipping_method_name":"Ground","shipping_phone":"707-287-6262","shipping_state":"CA","shipping_title":"Shipping Address","shipping_zip":"95476","ship_status":"Shipped","state":"","tax_rate":"8.75","transaction_id":"36","zip":"","products":[{"id":"42","sku":"H","name":"2017 Pinot Meunier","type":"","bottle_size":"750mL","retail_price":"0.00","discount":"0.00","discount_type":"","price":"45","quantity":"1","status":"","description":"2017 Pinot Meunier ","image":"","stock_status":"","shipped":"0","created":"2018-03-23 16:24:18"}]}
+
+
+
+### Get Order [GET /pos/orders/{id}]
 
 + Parameters
   + id: ` `(number, required) - Order Id
@@ -846,7 +926,10 @@ Resources related to Orders.
 
 
 
-### Search Orders [GET /orders/search]
+### Search Orders [GET /pos/orders/search/{query}]
+
++ Parameters
+  + query: ` `(string, required) - Order Search Query String
 
 
 + Request (application/json)
@@ -854,9 +937,6 @@ Resources related to Orders.
     + Headers
 
             X-Auth-Token: XXXXXXXXX
-    + Body
-
-            [{"type": "range", "key": "datestamp", "from": 1522540800, "to": 1524097161},{"type": "term", "key": "payment_status", "value": "Paid"},{"type": "terms", "key": "ship_status", "value": ["Shipped", "Picked Up", "Completed"]}]
 
 + Response 200 (application/json)
 
@@ -867,7 +947,7 @@ Resources related to Orders.
 ## Orders Notes [/orders/notes]
 
 
-### Add Note [POST /orders/{id}/notes]
+### Add Note [POST /pos/orders/{id}/notes]
 
 + Parameters
   + id: ` `(number, required) - Order Id
@@ -890,7 +970,7 @@ Resources related to Orders.
 
 
 
-### Get Notes [GET /orders/{id}/notes/{type}]
+### Get Notes [GET /pos/orders/{id}/notes/{type}]
 
 + Parameters
   + id: ` `(number, required) - Order Id
@@ -912,7 +992,7 @@ Resources related to Orders.
 ## Orders Packages [/orders/packages]
 
 
-### Add Packages [PUT /orders/{id}/packages]
+### Add Packages [PUT /pos/orders/{id}/packages]
 
 + Parameters
   + id: ` `(number, required) - Order Id
@@ -935,7 +1015,7 @@ Resources related to Orders.
 
 
 
-### Clear Packages [DELETE /orders/{id}/packages]
+### Clear Packages [DELETE /pos/orders/{id}/packages]
 
 + Parameters
   + id: ` `(number, required) - Order Id
@@ -955,7 +1035,7 @@ Resources related to Orders.
 
 
 
-### Get Packages [GET /orders/{id}/packages]
+### Get Packages [GET /pos/orders/{id}/packages]
 
 + Parameters
   + id: ` `(number, required) - Order Id
@@ -975,7 +1055,7 @@ Resources related to Orders.
 
 
 
-### Remove Package [DELETE /orders/{id}/packages/{tracking_number}]
+### Remove Package [DELETE /pos/orders/{id}/packages/{tracking_number}]
 
 + Parameters
   + id: ` `(number, required) - Order Id
@@ -997,7 +1077,7 @@ Resources related to Orders.
 ## Orders Tags [/orders/tags]
 
 
-### Add Tag [PUT /orders/{id}/tags/{tag}]
+### Add Tag [PUT /pos/orders/{id}/tags/{tag}]
 
 + Parameters
   + id: ` `(number, required) - Order Id
@@ -1018,7 +1098,7 @@ Resources related to Orders.
 
 
 
-### Clear Tags [DELETE /orders/{id}/tags]
+### Clear Tags [DELETE /pos/orders/{id}/tags]
 
 + Parameters
   + id: ` `(number, required) - Order Id
@@ -1038,7 +1118,7 @@ Resources related to Orders.
 
 
 
-### Get Tags [GET /orders/{id}/tags]
+### Get Tags [GET /pos/orders/{id}/tags]
 
 + Parameters
   + id: ` `(number, required) - Order Id
@@ -1058,7 +1138,7 @@ Resources related to Orders.
 
 
 
-### Remove Tag [DELETE /orders/{id}/tags/{tag}]
+### Remove Tag [DELETE /pos/orders/{id}/tags/{tag}]
 
 + Parameters
   + id: ` `(number, required) - Order Id
@@ -1084,7 +1164,7 @@ Resources related to Payment.
 ## Payment [/payment]
 
 
-### Create Payment Method [POST /payment]
+### Create Payment Method [POST /pos/payment]
 
 
 + Request (application/json)
@@ -1120,7 +1200,7 @@ Resources related to Payment.
 
 
 
-### Delete Payment Method [DELETE /payment/{id}]
+### Delete Payment Method [DELETE /pos/payment/{id}]
 
 + Parameters
   + id: ` `(number, required) - Payment Method Id
@@ -1140,7 +1220,7 @@ Resources related to Payment.
 
 
 
-### Get All Payment Menthods [GET /payment]
+### Get All Payment Menthods [GET /pos/payment]
 
 
 + Request (application/json)
@@ -1157,7 +1237,7 @@ Resources related to Payment.
 
 
 
-### Get Default Customer Payment Method [GET /payment/customer/{customer_id}/default]
+### Get Default Customer Payment Method [GET /pos/payment/customer/{customer_id}/default]
 
 + Parameters
   + customer_id: ` `(number, required) - Customer Id
@@ -1177,7 +1257,7 @@ Resources related to Payment.
 
 
 
-### Get Payment Method [GET /payment/{id}]
+### Get Payment Method [GET /pos/payment/{id}]
 
 + Parameters
   + id: ` `(number, required) - Payment Method Id
@@ -1197,7 +1277,7 @@ Resources related to Payment.
 
 
 
-### Get Payment Methods By Customer [GET /payment/customer/{customer_id}]
+### Get Payment Methods By Customer [GET /pos/payment/customer/{customer_id}]
 
 + Parameters
   + customer_id: ` `(number, required) - Customer Id
@@ -1217,7 +1297,7 @@ Resources related to Payment.
 
 
 
-### Set Default Customer Payment Method [PUT /payment/customer/{customer_id}/default/{id}]
+### Set Default Customer Payment Method [PUT /pos/payment/customer/{customer_id}/default/{id}]
 
 + Parameters
   + customer_id: ` `(number, required) - Customer Id
@@ -1238,7 +1318,7 @@ Resources related to Payment.
 
 
 
-### Update Payment Method [PUT /payment/{id}]
+### Update Payment Method [PUT /pos/payment/{id}]
 
 + Parameters
   + id: ` `(number, required) - Payment Method Id
