@@ -18,14 +18,19 @@ The *X-Auth-Token* header is used to authenticate with the API server. The Auth 
 
 ## Authentication
 
-There are 2 endpoints used for authenticating with the API:
+There are 3 endpoints used for authenticating with the API:
 
 + <a href='#reference/account/account/authenticate-user'>Authenticate User</a>
++ <a href='#reference/account/account/authenticate-user-2-factor-auth'>Authenticate User 2 Factor Auth</a>
 + <a href='#reference/account/account/get-account-auth-token'>Get Account Auth Token</a>
 
 #### Authenticate User
 
 The <a href='#reference/account/account/authenticate-user'>*Authenticate User*</a> method allows authentication provided a valid administrator username and password. Along with basic profile information this method returns a *Ticket* which can be used with the method <a href='#reference/account/account/get-account-auth-token'>*Get Account Auth Token*</a> to obtain an *Auth Token* which can be passed in the *X-Auth-Token* Header to allow API access for an account. If you already know what account you want to access you can do this in a single step by supplying the account you wish to access as well using the optional *account* field.
+
+#### 2 Factor Authentication
+
+The <a href='#reference/account/account/authenticate-user-2-factor-auth'>*Authenticate User 2 Factor Auth*</a> method allows authentication for administrators who have optionaly enabled the 2 Factor Auth feature. If 2FA is enabled then the response from <a href='#reference/account/account/authenticate-user'>*Authenticate User*</a> will have the 2FA "Token" and an additional field "require_2fa" which will be set to 1. The 2FA Token along with the 2FA Code that was sent directly to the administrator can be sumitted using <a href='#reference/account/account/authenticate-user-2-factor-auth'>*Authenticate User 2 Factor Auth*</a> to complete the Authentication process and return an Authentication Ticket which can be supplied to <a href='#reference/account/account/get-account-auth-token'>*Get Account Auth Token*</a>.
 
 #### Get Account Auth Token
 
@@ -56,6 +61,27 @@ Resources related to Account.
     + Body
 
             {"username":"example@figurecommerce.com","password":"XXXXXX"}
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"ticket":"0b1dXYb0feda78d3dbHB873597dcd684b6ebmd9","profile":{"id":"42","email":"example@figurecommerce.com","first_name":"Ian","last_name":"Tucker","created":"2013-09-03 09:02:07"},"accounts":{"209":{"id":"209","app":"pos","account":"figureapi","name":"Figure Commerce"}}}
+
+
+
+### Authenticate User 2 Factor Auth [POST /account/authenticate/2fa]
+
+
++ Request (application/json)
+
+  + Attributes
+      + pin (string, required) - 2FA Code
+      + ticket (string, required) - Customer Authentication Token
+  
+    + Body
+
+            {"ticket":"0b1dXYb0feda78d3dbHB873597dcd684b6ebmd9", "pin":"123456"}
 
 + Response 200 (application/json)
 
@@ -431,6 +457,26 @@ Resources related to Customers.
     + Body
 
             []
+
+
+
+### Get Customer Order History [GET /pos/customers/{id}/orders]
+
++ Parameters
+  + id: ` `(number, required) - Customer Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"361":{"id":"361","datestamp":"2015-04-07 01:59:22","status":"","subtotal":"683.00","tax":"54.64","shipping":"0.00","discount":"0.00","credits":"0.00","refund":"0.00","total":"737.64","customer_id":"42","address":"523 Brown St","address_2":"","birthday":"1986-04-3","city":"Napa","company":"","credit_id":"118","credit_number":"8431","credit_type":"American Express","customer_credits":"0.00","email":"ian@750group.com","first_name":"Ian","gift_message":"","instructions":"","item_count":"13","last_name":"Tucker","order_id":"361","order_type":"Web","payment_status":"Paid","phone":"707-501-7491","requested_ship_date":"2015-03-16","shipping_address":"523 Brown St","shipping_address_2":"","shipping_city":"Napa","shipping_company":"","shipping_first_name":"Ian","shipping_id":"4083","shipping_last_name":"Tucker","shipping_method":"3","shipping_method_carrier":"DDC","shipping_method_code":"FXO","shipping_method_name":"Expedited Shipping","shipping_phone":"707-501-7491","shipping_state":"CA","shipping_title":"ShippingAddress","shipping_zip":"94558","ship_status":"Not Shipped","state":"CA","tax_rate":"8","transaction_id":"387","zip":"94559","products":[{"id":"361","sku":"12312312312","name":"2014 Rosu00e9","type":"","price":"65","discount":"0","quantity":"7","status":"","description":"2014 Rosu00e9 Napa Valley","image":"//s3.amazonaws.com/efcheckout/acmev/product/12312312312-1725.jpg","stock_status":"","shipped":"0","created":"2015-04-07 01:59:22"},{"id":"361","sku":"AV10NVRB","name":"2009 Red Blend","type":"","price":"38","discount":"0","quantity":"6","status":"","description":"2009 Red Blend Napa Valley","image":"//s3.amazonaws.com/efcheckout/acmev/product/AV10NVRB-3972.jpg","stock_status":"","shipped":"0","created":"2015-04-07 01:59:22"}]},"359":{"id":"359","datestamp":"2015-04-07 01:12:57","status":"","subtotal":"412.00","tax":"32.96","shipping":"0.00","discount":"0.00","credits":"0.00","refund":"0.00","total":"444.96","customer_id":"42","address":"523 Brown St","address_2":"","birthday":"1986-04-3","city":"Napa","company":"","credit_id":"118","credit_number":"8431","credit_type":"American Express","customer_credits":"0.00","email":"ian@750group.com","first_name":"Ian","gift_message":"","instructions":"","item_count":"8","last_name":"Tucker","order_id":"359","order_type":"Web","payment_status":"Paid","phone":"707-501-7491","requested_ship_date":"2015-03-16","shipping_address":"354357357","shipping_address_2":"","shipping_city":"Yountville","shipping_company":"","shipping_first_name":"Ian","shipping_id":"3913","shipping_last_name":"Tucker","shipping_method":"3","shipping_method_carrier":"DDC","shipping_method_code":"FXO","shipping_method_name":"Expedited Shipping","shipping_phone":"7075017491","shipping_state":"CA","shipping_title":"ShippingAddress","shipping_zip":"94599","ship_status":"Not Shipped","state":"CA","tax_rate":"8","transaction_id":"385","zip":"94559","products":[{"id":"359","sku":"12312312312","name":"2014 Rosu00e9","type":"","price":"65","discount":"0","quantity":"4","status":"","description":"2014 Rosu00e9 Napa Valley","image":"//s3.amazonaws.com/efcheckout/acmev/product/12312312312-1725.jpg","stock_status":"","shipped":"0","created":"2015-04-07 01:12:57"},{"id":"359","sku":"AV10NVRB","name":"2009 Red Blend","type":"","price":"38","discount":"0","quantity":"4","status":"","description":"2009 Red Blend Napa Valley","image":"//s3.amazonaws.com/efcheckout/acmev/product/AV10NVRB-3972.jpg","stock_status":"","shipped":"0","created":"2015-04-07 01:12:57"}]},"342":{"id":"342","datestamp":"2015-04-07 00:51:10","status":"","subtotal":"780.00","tax":"62.40","shipping":"0.00","discount":"0.00","credits":"0.00","refund":"0.00","total":"842.40","customer_id":"42","address":"523 Brown St","address_2":"","birthday":"1986-04-3","city":"Napa","company":"","credit_id":"118","credit_number":"1111","credit_type":"Visa","email":"ian@750group.com","first_name":"Ian","gift_message":"","instructions":"","item_count":"12","last_name":"Tucker","order_id":"342","order_type":"Web","payment_status":"Paid","phone":"707-501-7491","requested_ship_date":"2015-03-16","shipping_address":"523 Brown St","shipping_address_2":"","shipping_city":"Napa","shipping_company":"","shipping_first_name":"Ian","shipping_id":"4083","shipping_last_name":"Tucker","shipping_method":"3","shipping_method_carrier":"DDC","shipping_method_code":"FXO","shipping_method_name":"Expedited Shipping","shipping_phone":"707-501-7491","shipping_state":"CA","shipping_title":"ShippingAddress","shipping_zip":"94558","ship_status":"Not Shipped","state":"CA","tax_rate":"8","transaction_id":"369","zip":"94559","products":[{"id":"342","sku":"12312312312","name":"2014 Rosu00e9","type":"","price":"65","discount":"0","quantity":"12","status":"","description":"2014 Rosu00e9 Napa Valley","image":"//s3.amazonaws.com/efcheckout/acmev/product/12312312312-1725.jpg","stock_status":"","shipped":"0","created":"2015-04-07 00:51:10"}]},"328":{"id":"328","datestamp":"2015-03-13 03:40:01","status":"","subtotal":"915.00","tax":"62.22","shipping":"0.00","discount":"137.25","credits":"240.00","refund":"0.00","total":"599.97","customer_id":"42","address":"523 Brown St","address_2":"","address_id":"3913","birthday":"1986-04-3","city":"Napa","company":"","credit_number":"8431","credit_type":"American Express","customer_credits":"240.00","discount_customer":"0.15","email":"ian@750group.com","first_name":"Ian","item_count":"12","last_name":"Tucker","order_id":"328","order_type":"Admin","payment_id":"118","payment_status":"Paid","phone":"707-501-7491","sales_agent":"Ian Tucker","sale_credit":"...","shipping_address":"354357357","shipping_address_2":"","shipping_city":"Yountville","shipping_company":"","shipping_first_name":"Ian","shipping_last_name":"Tucker","shipping_method":"12","shipping_method_carrier":"UPS","shipping_method_code":"UPSGND","shipping_method_name":"Intergalactic Shipping","shipping_phone":"7075017491","shipping_state":"CA","shipping_zip":"94599","ship_status":"Shipped","state":"CA","tax_rate":"8","transaction_id":"353","zip":"94559","products":[{"id":"328","sku":"12312312312","name":"2011 Cabernet Sauvignon","type":"","price":"65","discount":"0","quantity":"3","status":"","description":"2011 Cabernet Sauvignon Napa Valley","image":"//s3.amazonaws.com/efcheckout/acmev/product/12312312312-1725.jpg","stock_status":"","shipped":"0","created":"2015-03-13 03:40:01"}]}}
 
 
 
