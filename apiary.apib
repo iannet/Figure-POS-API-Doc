@@ -300,6 +300,160 @@ Resources related to Addresses.
 
             {"id":"3989","hash":"a187902adebd6b1aab810511fabcf475e4f5c8e2","created":"2018-03-05 22:03:28","last_update":"2018-04-20 20:48:32","title":"","first_name":"Ian","last_name":"Tucker","birthday":"1985-06-01","company":"Figure Commerce","phone":"7075558520","email":"","address":"523 Brown St","address_2":"","city":"Napa","state":"CA","zip":"94559","zip_ext":"3302","country":"US","lat":"38.29401000","long":"-122.28348000","residential":"1","verified":"1","customer_id":"42","default":"1","public":"0"}
 
+## Group Appointments
+Resources related to Appointments.
+
+
+## Appointments [/appointments]
+
+
+### Create Appointment [POST /pos/appointments]
+
+
++ Request (application/json)
+
+  + Attributes
+      + customer_id (number, required) - Customer Id
+      + status (string, optional) - Appointment Status
+      + timestamp (string, required) - Appointment Time
+  
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+    + Body
+
+            {"customer_id":1,"timestamp":"2020-07-31 11:00:00","status":"Requested","page_source":"Visit","created_by":"Customer","ip_address":"5.42.254.123","first_name":"John","last_name":"Doe","email":"john.doe@gmail.com","mobile_phone":"7075551234","alternate_date":"01/10/2021","preferred_time":"Morning","appointment_type":"Winery Tour & Tasting","size":"2","guests":"John DoernJane Doe","customer_comments":"I understand the tasting is unavailable to us (as members awaiting allocation), and I hope the Monday appointment is available. Thanks in advance!","name":"Jon Doe","customer_first_name":"Jon","cancellation_reason":"","customer_last_name":"Doe","customer_phone":"7075551234","customer_email":"john.doe@gmail.com","hour":"10:00 AM","endtime":"11:30 AM","host":"","room":"Foyer Lounge","reason":"Waiting List","category":"Consumer Conversion","notes":"Very kind, read the rules and requested a monday morning. Offered the 10am time slot."}
+
++ Response 200 (application/json)
+
+    + Body
+
+            "35"
+
+
+
+### Delete Appointment [DELETE /pos/appointments/{id}]
+
++ Parameters
+  + id: ` `(number, required) - Appointment Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
+
+
+### Get All Appointments After Date [GET /pos/appointments/after/{start}]
+
++ Parameters
+  + start: ` `(string, required) - Appointment Date
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            [{"id":35,"customer_id":1,"timestamp":"2020-07-31 11:00:00","status":"Requested","page_source":"Visit","created_by":"Customer","ip_address":"5.42.254.123","first_name":"John","last_name":"Doe","email":"john.doe@gmail.com","mobile_phone":"7075551234","alternate_date":"01/10/2021","preferred_time":"Morning","appointment_type":"Winery Tour & Tasting","size":"2","guests":"John DoernJane Doe","customer_comments":"I understand the tasting is unavailable to us (as members awaiting allocation), and I hope the Monday appointment is available. Thanks in advance!","name":"Jon Doe","customer_first_name":"Jon","cancellation_reason":"","customer_last_name":"Doe","customer_phone":"7075551234","customer_email":"john.doe@gmail.com","hour":"10:00 AM","endtime":"11:30 AM","host":"","room":"Foyer Lounge","reason":"Waiting List","category":"Consumer Conversion","notes":"Very kind, read the rules and requested a monday morning. Offered the 10am time slot."}]
+
+
+
+### Get All Appointments Before Date [GET /pos/appointments/before/{end}]
+
++ Parameters
+  + end: ` `(string, required) - Appointment Date
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            [{"id":35,"customer_id":1,"timestamp":"2020-07-31 11:00:00","status":"Requested","page_source":"Visit","created_by":"Customer","ip_address":"5.42.254.123","first_name":"John","last_name":"Doe","email":"john.doe@gmail.com","mobile_phone":"7075551234","alternate_date":"01/10/2021","preferred_time":"Morning","appointment_type":"Winery Tour & Tasting","size":"2","guests":"John DoernJane Doe","customer_comments":"I understand the tasting is unavailable to us (as members awaiting allocation), and I hope the Monday appointment is available. Thanks in advance!","name":"Jon Doe","customer_first_name":"Jon","cancellation_reason":"","customer_last_name":"Doe","customer_phone":"7075551234","customer_email":"john.doe@gmail.com","hour":"10:00 AM","endtime":"11:30 AM","host":"","room":"Foyer Lounge","reason":"Waiting List","category":"Consumer Conversion","notes":"Very kind, read the rules and requested a monday morning. Offered the 10am time slot."}]
+
+
+
+### Get All Appointments in Date Range [GET /pos/appointments/{start}/{end}]
+
++ Parameters
+  + end: ` `(string, required) - Appointments End Date
+  + start: ` `(string, required) - Appointments Start Date
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            [{"id":35,"customer_id":1,"timestamp":"2020-07-31 11:00:00","status":"Requested","page_source":"Visit","created_by":"Customer","ip_address":"5.42.254.123","first_name":"John","last_name":"Doe","email":"john.doe@gmail.com","mobile_phone":"7075551234","alternate_date":"01/10/2021","preferred_time":"Morning","appointment_type":"Winery Tour & Tasting","size":"2","guests":"John DoernJane Doe","customer_comments":"I understand the tasting is unavailable to us (as members awaiting allocation), and I hope the Monday appointment is available. Thanks in advance!","name":"Jon Doe","customer_first_name":"Jon","cancellation_reason":"","customer_last_name":"Doe","customer_phone":"7075551234","customer_email":"john.doe@gmail.com","hour":"10:00 AM","endtime":"11:30 AM","host":"","room":"Foyer Lounge","reason":"Waiting List","category":"Consumer Conversion","notes":"Very kind, read the rules and requested a monday morning. Offered the 10am time slot."}]
+
+
+
+### Get Appointment [GET /pos/appointments/{id}]
+
++ Parameters
+  + id: ` `(number, required) - Appointment Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"id":35,"customer_id":1,"timestamp":"2020-07-31 11:00:00","status":"Requested","page_source":"Visit","created_by":"Customer","ip_address":"5.42.254.123","first_name":"John","last_name":"Doe","email":"john.doe@gmail.com","mobile_phone":"7075551234","alternate_date":"01/10/2021","preferred_time":"Morning","appointment_type":"Winery Tour & Tasting","size":"2","guests":"John DoernJane Doe","customer_comments":"I understand the tasting is unavailable to us (as members awaiting allocation), and I hope the Monday appointment is available. Thanks in advance!","name":"Jon Doe","customer_first_name":"Jon","cancellation_reason":"","customer_last_name":"Doe","customer_phone":"7075551234","customer_email":"john.doe@gmail.com","hour":"10:00 AM","endtime":"11:30 AM","host":"","room":"Foyer Lounge","reason":"Waiting List","category":"Consumer Conversion","notes":"Very kind, read the rules and requested a monday morning. Offered the 10am time slot."}
+
+
+
+### Update Appointment [PUT /pos/appointments/{id}]
+
++ Parameters
+  + id: ` `(number, required) - Appointment Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+    + Body
+
+            {"timestamp":"2020-07-31 13:30:00","status":"Confirmed"}
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
 ## Group Cart
 Resources related to Cart.
 
@@ -341,6 +495,116 @@ Resources related to Cart.
     + Body
 
             "pst_test_rgnG70WzKEyvdegWNup0nqJ"
+
+## Group ClubMembers
+Resources related to ClubMembers.
+
+
+## ClubMembers [/club-members]
+
+
+### Cancel Membership [DELETE /pos/club-members/{id}]
+
++ Parameters
+  + id: ` `(number, required) - Membership Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
+
+
+### Create New Membership [POST /pos/club-members]
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXXXXX
+    + Body
+
+            { "customer_id": 42, "club_id": 5,  "address_id": 27,  "payment_id": 3142}
+
++ Response 200 (application/json)
+
+    + Body
+
+            14
+
+
+
+### Get Membership Details [GET /pos/club-members/{id}]
+
++ Parameters
+  + id: ` `(number, required) - Membership Id
+
+
++ Request (application/json)
+
+    + Headers
+
+             X-Auth-Token: XXXXXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"id":"14","club_id":"3","customer_id":"1","payment_id":"113","address_id":"1","method_id":null,"cart_session":"","exclude_until":null,"status":"","authorization":"","amount":"0","total":"0","error":"","created":"2020-07-27 12:59:20","last_update":"2020-07-27 13:00:16","canceled":"0","cancelation_date":"0000-00-00 00:00:00","cancellation_reason":"","sales_person": "Tyson"}
+
+
+
+### Update Membership [PUT /pos/club-members/{id}]
+
++ Parameters
+  + id: ` `(number, required) - Membership Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXXXXX
+    + Body
+
+            {"address_id":4093,"payment_id":6}
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
+
+## Group Clubs
+Resources related to Clubs.
+
+
+## Clubs [/clubs]
+
+
+### Get All Clubs [GET /pos/clubs]
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+
++ Response 200 (application/json)
+
+    + Body
+
+            {"5":{"id":"5","name":"Founders Club","description":"Red. Only. Need we say more? You won't regret this commitment. Look for a case of our finest red selections to arrive at your door in January, May and November. In order to insure that each shipment will showcase seasonally appropriate wines we've asked our in-house chef, Michel Brassica to work with our winemaker to hand-select wines that will pair perfectly with the dishes of the season. Who knows, he might even through in some of his award-winning recipes...","discount":"20","free_shipping":"0","club_confirmation_message":"We greatly appreciate your commitment to support the consumption of legendary red wines. \r\nSalud!\r\n\r\n- The Acme Vineyards Crew","club_info_1":"<ul><li>Shipments 3 times a year:&nbsp;Jan, May &amp; Nov<\/li><li>Private tastings by appointment<\/li><li>Exclusive Invites to Special Events<\/li><li>First access to limited release white wines<\/li><\/ul>","club_info_2":"$300 per shipment<br \/>(tax and shipping not included)","club_info_3":"","sort":"1"},"4":{"id":"4","name":"Acme Refreshing Whites Club","description":"If you've ever had a chance to visit the Napa Valley then you know firsthand that there are fantastic whites being produced right alongside the legendary reds \u2014 they are just in slightly shorter supply.  So don't just settle for whatever your local Trader Joe's has on hand  -- sign on to receive a selection of fantastic white wines available only through our exclusive <em>Refreshing Whites Club<\/em> and we'll be sure that three times a year 12 outstanding bottles will arrive at your doorstep.","discount":"15","free_shipping":"1","club_confirmation_message":"We're so glad you've come to your senses and joined the club!\r\n\r\n- The Acme Vineyards Crew","club_info_1":"<ul><li>Shipments 3 times a year:&nbsp;Jan, May &amp; Nov<\/li><li>Private tastings by appointment<\/li><li>Exclusive Invites to Special Events<\/li><li>First access to limited release white wines<\/li><\/ul>","club_info_2":"$200 - $230 per shipment<br \/>(tax and shipping not included)","club_info_3":"","sort":"2"}}
 
 ## Group Config
 Resources related to Config.
@@ -1006,6 +1270,29 @@ Resources related to Orders.
     + Body
 
             {"id":"42","datestamp":"2018-03-23 16:24:15","last_update":"2018-03-23 16:24:15","status":"","subtotal":"45.00","tax":"3.15","shipping":"20.00","discount":"9.00","credits":"0.00","refund":"0.00","total":"59.15","customer_id":"1","address":"","address_2":"","address_id":"3979","birthday":"1982-11-1","city":"","company":"","credit_id":"19","credit_number":"4242","credit_type":"Visa","customer_credits":"0.00","discount_customer":"0.2","email":"example@commercebyfigure.com","first_name":"John","gift_message":"","instructions":"","item_count":"1","last_name":"Doe","order_id":"42","order_type":"Web","payment_status":"Paid","phone":"707-287-6262","salutation":"Mr.","shipping_address":"770 3rd St E","shipping_address_2":"","shipping_city":"Sonoma","shipping_company":"","shipping_first_name":"John","shipping_id":"3979","shipping_last_name":"Doe","shipping_method":"11","shipping_method_carrier":"FedEx","shipping_method_code":"FDXGND","shipping_method_name":"Ground","shipping_phone":"707-287-6262","shipping_state":"CA","shipping_title":"Shipping Address","shipping_zip":"95476","ship_status":"Shipped","state":"","tax_rate":"8.75","transaction_id":"36","zip":"","products":[{"id":"42","sku":"H","name":"2017 Pinot Meunier","type":"","bottle_size":"750mL","retail_price":"0.00","discount":"0.00","discount_type":"","price":"45","quantity":"1","status":"","description":"2017 Pinot Meunier ","image":"","stock_status":"","shipped":"0","created":"2018-03-23 16:24:18"}]}
+
+
+
+### Update Order [PUT /pos/orders/{id}]
+
++ Parameters
+  + id: ` `(number, required) - Order Id
+
+
++ Request (application/json)
+
+    + Headers
+
+            X-Auth-Token: XXXXXXXXX
+    + Body
+
+            {"ship_status": "Picked Up", "actual_ship_date": "2020-04-04 10:00:00", "shipping_first_name": "Tyson", "shipping_last_name": "Caly", "shipping_address": "523 Brown St.", "shipping_address_2": "Ste 2", "shipping_city": "Napa", "shipping_state": "CA", "shipping_zip": "94559"}
+
++ Response 200 (application/json)
+
+    + Body
+
+            true
 
 ## Orders Notes [/orders/notes]
 
